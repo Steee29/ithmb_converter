@@ -9,16 +9,16 @@ pip install Pillow
 python main.py
 ```
 
-Place the script in the same folder as the `.ithmb` files and the `Photo Database`.
+Place the `.ithmb` files and the `Photo Database` inside the `input_ithmb/` folder.
 Extracted photos will be saved to `converted_photos/`.
 
 ## Options
 
-| Flag           | Default           | Description                            |
-| -------------- | ----------------- | -------------------------------------- |
-| `--format ID`  | `3008`            | Format ID to extract (see table below) |
-| `--format 0`   | -                 | Extract all formats                    |
-| `--input DIR`  | `.`               | Folder containing the source files     |
+| Flag           | Default            | Description                            |
+| -------------- | ------------------ | -------------------------------------- |
+| `--format ID`  | `3008`             | Format ID to extract (see table below) |
+| `--format 0`   | -                  | Extract all formats                    |
+| `--input DIR`  | `input_ithmb`      | Folder containing the source files     |
 | `--output DIR` | `converted_photos` | Output folder                          |
 
 Examples:
@@ -134,16 +134,18 @@ A single line leveraging Pillow's C-level decoder. BGR;15 = 15-bit color, layout
 ## Typical File Structure
 
 ```
-dump_iphone/
-  Photo Database          # Apple binary database
-  F3004_1.ithmb          # micro thumbnails 55x55
-  F3008_1.ithmb          # full-size photos 640x480 (slots 1-854)
-  F3008_2.ithmb          # full-size photos 640x480 (slots 855-1708)
-  F3008_3.ithmb          # full-size photos 640x480 (slots 1709-2562)
-  F3008_4.ithmb          # full-size photos 640x480 (slots 2563-3318)
-  F3009_1.ithmb          # medium thumbnails 120x160
-  F3011_1.ithmb          # small thumbnails 75x75
-  main.py      # this script
+ithmb_converter/
+  main.py                          # this script
+  input_ithmb/                     # place source files here
+    Photo Database                 # Apple binary database
+    F3004_1.ithmb                  # micro thumbnails 55x55
+    F3008_1.ithmb                  # full-size photos 640x480 (slots 1-854)
+    F3008_2.ithmb                  # full-size photos 640x480 (slots 855-1708)
+    F3008_3.ithmb                  # full-size photos 640x480 (slots 1709-2562)
+    F3008_4.ithmb                  # full-size photos 640x480 (slots 2563-3318)
+    F3009_1.ithmb                  # medium thumbnails 120x160
+    F3011_1.ithmb                  # small thumbnails 75x75
+  converted_photos/                # output folder
 ```
 
 ## Requirements
@@ -156,4 +158,3 @@ dump_iphone/
 1. **Photos split in half + ghosting**: caused by wrong dimensions (320x480 instead of 640x480). Each 614400-byte slot was being read as 2 images of 307200 bytes.
 2. **3x horizontal repetition**: caused by swapped width/height (480x640 instead of 640x480). The 480px row read 3/4 of the actual 640px row, causing misalignment.
 3. **Photo Database parser not finding records**: list blocks (`mhli`, `mhlf`) have `num_items` at offset 8, not `total_len`. Also, format definitions use `mhlf` (not `mhli`), and field offsets in `mhif`/`mhni` were wrong.
-
