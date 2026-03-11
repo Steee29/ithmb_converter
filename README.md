@@ -10,7 +10,7 @@ python main.py
 ```
 
 Place the script in the same folder as the `.ithmb` files and the `Photo Database`.
-Extracted photos will be saved to `foto_convertite/`.
+Extracted photos will be saved to `converted_photos/`.
 
 ## Options
 
@@ -19,7 +19,7 @@ Extracted photos will be saved to `foto_convertite/`.
 | `--format ID`  | `3008`            | Format ID to extract (see table below) |
 | `--format 0`   | -                 | Extract all formats                    |
 | `--input DIR`  | `.`               | Folder containing the source files     |
-| `--output DIR` | `foto_convertite` | Output folder                          |
+| `--output DIR` | `converted_photos` | Output folder                          |
 
 Examples:
 
@@ -156,3 +156,4 @@ dump_iphone/
 1. **Photos split in half + ghosting**: caused by wrong dimensions (320x480 instead of 640x480). Each 614400-byte slot was being read as 2 images of 307200 bytes.
 2. **3x horizontal repetition**: caused by swapped width/height (480x640 instead of 640x480). The 480px row read 3/4 of the actual 640px row, causing misalignment.
 3. **Photo Database parser not finding records**: list blocks (`mhli`, `mhlf`) have `num_items` at offset 8, not `total_len`. Also, format definitions use `mhlf` (not `mhli`), and field offsets in `mhif`/`mhni` were wrong.
+
